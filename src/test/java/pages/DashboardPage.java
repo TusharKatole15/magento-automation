@@ -5,25 +5,22 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class BasePage {
+public class DashboardPage {
 
     WebDriver driver;
 
-    public BasePage(WebDriver driver) {
+    public DashboardPage(WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy(xpath = ("//div[@class='panel wrapper']//a[text()='Create an Account']"))
-    public WebElement createAccountBtn;
-
-    @FindBy(xpath = ("//header//a[contains(text(),'Sign In')]"))
-    public WebElement signInBtn;
-
     @FindBy(xpath = ("//div[@class='panel wrapper']//span[@class='logged-in']"))
     public WebElement welcomeMessage;
 
+    @FindBy(xpath = ("//div[@class='panel header']//button[@class='action switch']"))
+    public WebElement expandOptions;
 
-
+    @FindBy(xpath = ("(//li[@class=\"authorization-link\"])[1]"))
+    public WebElement signOutBtn;
 
 }

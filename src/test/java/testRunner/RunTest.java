@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
         plugin = {
                 "pretty",
                 "junit:test-output/results/Junit/Cucumber.xml",
-                "html:test-output/cucumber-html-report"
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
         },
         monochrome = true,
         tags = "@SignUp"

@@ -17,9 +17,16 @@ import java.nio.file.StandardCopyOption;
 public class Hooks {
 
     private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
+    private static boolean isAllurePathSet = false;
 
     @Before
     public void setUp(Scenario scenario) {
+        if (!isAllurePathSet) {
+            System.setProperty("allure.results.directory", "target/custom-allure-results");
+            logger.info("Allure results directory set to: target/custom-allure-results");
+            isAllurePathSet = true;
+        }
+
         logger.info("========== Starting Scenario: " + scenario.getName() + " ==========");
         BaseTest.launchBrowser();
     }
@@ -32,6 +39,7 @@ public class Hooks {
         } else {
             logger.info("Scenario Passed: " + scenario.getName());
         }
+
         BaseTest.quitDriver();
         logger.info("========== Ending Scenario ==========");
     }
@@ -42,7 +50,12 @@ public class Hooks {
         String timestamp = new java.text.SimpleDateFormat("yyyy-MM-dd_HHmmss").format(new java.util.Date());
 
         String sanitizedScenarioName = scenario.getName().replaceAll("[^a-zA-Z0-9]", "_");
-        String screenshotName = "screenshots/" + sanitizedScenarioName + "_" + timestamp + ".png";
+        String screenshotName = "test-output/screenshots/" + sanitizedScenarioName + "_" + timestamp + ".png";
+
+        File screenshotDir = new File("test-output/screenshots/");
+        if (!screenshotDir.exists()) {
+            screenshotDir.mkdirs();
+        }
 
         try {
             Files.copy(screenshot.toPath(), new File(screenshotName).toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -51,5 +64,4 @@ public class Hooks {
             logger.error("Error saving screenshot: " + e.getMessage());
         }
     }
-
 }

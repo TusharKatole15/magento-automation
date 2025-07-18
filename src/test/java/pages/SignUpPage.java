@@ -5,6 +5,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+
 public class SignUpPage {
 
     WebDriver driver;
@@ -31,4 +33,7 @@ public class SignUpPage {
 
     @FindBy(xpath = "//button[@title='Create an Account']")
     public WebElement submitBtn;
+
+    @FindBy(xpath = "//div[@class=\"mage-error\"]")
+    public List<WebElement> errorMessages;
 }

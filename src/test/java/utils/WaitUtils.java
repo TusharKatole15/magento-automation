@@ -1,6 +1,7 @@
 package utils;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -16,5 +17,8 @@ public class WaitUtils {
         getWait(driver, timeoutInSeconds).until(ExpectedConditions.titleContains(partialTitle));
     }
 
+    public static WebElement waitForElementToBeClickable(WebDriver driver, WebElement element, long timeoutInSeconds) {
+        return getWait(driver, timeoutInSeconds).until(ExpectedConditions.elementToBeClickable(element));
+    }
 
 }

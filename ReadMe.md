@@ -39,6 +39,6 @@ To generate a single-file HTML report run:
 allure generate test-output/allure-results --clean --single-file -o test-output/allure-report
 
 A single-file HTML report is generated at:
-target/allure-report
+test-output/allure-report
 
 You can open this HTML file in a browser to view test results.

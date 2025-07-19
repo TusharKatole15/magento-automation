@@ -2,6 +2,9 @@
 Feature: Sign Up and Login to Magento site
 
   # Email id is randomly generated on each test run
+  # Ads are handled inside the code
+  # Note: It may take 20-30 seconds to close the ad
+
   @SignUpWithValidCredentials
   Scenario: Create a new account
     Given User opens the base website

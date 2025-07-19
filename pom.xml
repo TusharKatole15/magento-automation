@@ -109,37 +109,10 @@
                 <configuration>
                     <useModulePath>false</useModulePath>
                     <systemPropertyVariables>
-                        <allure.results.directory>target/custom-allure-results</allure.results.directory>
+                        <allure.results.directory>test-output/allure-results</allure.results.directory>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
-
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>generate-allure-html</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>allure</executable>
-                            <arguments>
-                                <argument>generate</argument>
-                                <argument>target/custom-allure-results</argument>
-                                <argument>--clean</argument>
-                                <argument>--single-file</argument>
-                                <argument>-o</argument>
-                                <argument>target/allure-report.html</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
 
         </plugins>
     </build>

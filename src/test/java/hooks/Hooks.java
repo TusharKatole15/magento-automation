@@ -22,8 +22,8 @@ public class Hooks {
     @Before
     public void setUp(Scenario scenario) {
         if (!isAllurePathSet) {
-            System.setProperty("allure.results.directory", "target/custom-allure-results");
-            logger.info("Allure results directory set to: target/custom-allure-results");
+            System.setProperty("allure.results.directory", "test-output/allure-results");
+            logger.info("Allure results directory set to: test-output/allure-results");
             isAllurePathSet = true;
         }
 

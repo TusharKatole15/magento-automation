@@ -27,16 +27,16 @@ The framework automatically detects and closes dynamic ad popups.
 
 ## Logs
 
-Logs are saved at: logs/test.log
+Logs are saved at: test-output/logs/test.log
 
 ---
 
 ## Allure Report
 Allure test results are saved in:
-target/custom-allure-results/
+test-output/allure-results/
 
 To generate a single-file HTML report run:
-allure generate target/custom-allure-results --clean --single-file -o target/allure-report
+allure generate test-output/allure-results --clean --single-file -o test-output/allure-report
 
 A single-file HTML report is generated at:
 target/allure-report

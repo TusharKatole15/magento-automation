@@ -1,6 +1,7 @@
 @SignUp
 Feature: Sign Up and Login to Magento site
 
+  # Email id is randomly generated on each test run
   @SignUpWithValidCredentials
   Scenario: Create a new account
     Given User opens the base website

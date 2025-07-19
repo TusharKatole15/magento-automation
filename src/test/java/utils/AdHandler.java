@@ -1,47 +1,82 @@
 package utils;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.time.Duration;
+import java.util.List;
 
 public class AdHandler {
 
-    public static void closeAdIfPresent(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+    private static final Logger logger = LoggerFactory.getLogger(AdHandler.class);
 
-        if (tryToCloseAd(driver, null, "aswift_3", By.id("dismiss-button"), wait)) return;
-        if (tryToCloseAd(driver, "aswift_3", "ad_iframe", By.id("dismiss-button"), wait)) return;
-        if (tryToCloseAd(driver, null, "ad_iframe", By.id("dismiss-button"), wait)) return;
-        if (tryToCloseAd(driver, null, "aswift_1", By.id("dismiss-button"), wait)) return;
-        tryToCloseAd(driver, null, "ad_iframe", By.xpath("//div[contains(text(),'Close ad')]"), wait);
-    }
-
-    private static boolean tryToCloseAd(WebDriver driver, String outerIframeId, String innerIframeId,
-                                        By closeBtnLocator, WebDriverWait wait) {
+    public static boolean closeAdIfPresent(WebDriver driver) {
         try {
             driver.switchTo().defaultContent();
+            logger.info("Switched to default content to scan for ad iframes.");
 
-            if (outerIframeId != null) {
-                WebElement outerIframe = driver.findElement(By.id(outerIframeId));
-                driver.switchTo().frame(outerIframe);
+            List<WebElement> adIframes = driver.findElements(By.xpath("//iframe[@aria-label='Advertisement']"));
+            logger.info("Found {} advertisement iframe(s).", adIframes.size());
+
+            for (WebElement iframe : adIframes) {
+                if (iframe.isDisplayed()) {
+                    logger.info("Attempting to switch to visible ad iframe.");
+                    driver.switchTo().frame(iframe);
+
+                    if (searchAndCloseButton(driver)) {
+                        logger.info("Ad dismissed successfully.");
+                        return true;
+                    }
+
+                    driver.switchTo().parentFrame();
+                    logger.info("Returning to parent frame after checking ad iframe.");
+                } else {
+                    logger.info("Skipping non-visible ad iframe.");
+                }
             }
 
-            WebElement innerIframe = driver.findElement(By.id(innerIframeId));
-            driver.switchTo().frame(innerIframe);
-
-            WebElement closeBtn = wait.until(ExpectedConditions.elementToBeClickable(closeBtnLocator));
-            closeBtn.click();
-
-            System.out.println("Closed ad in iframe: " +
-                    (outerIframeId != null ? outerIframeId + " → " : "") + innerIframeId);
-            return true;
-
-        } catch (TimeoutException | NoSuchElementException | NoSuchFrameException e) {
-            System.out.println("Ad not found or not clickable in iframe: " +
-                    (outerIframeId != null ? outerIframeId + " → " : "") + innerIframeId);
-            return false;
+        } catch (Exception e) {
+            logger.error("Error while trying to close ad: {}", e.getMessage(), e);
         }
+
+        logger.info("No dismissible ad was found.");
+        return false;
+    }
+
+    private static boolean searchAndCloseButton(WebDriver driver) {
+        try {
+            List<WebElement> buttons = driver.findElements(By.id("dismiss-button"));
+            for (WebElement btn : buttons) {
+                if (btn.isDisplayed()) {
+                    btn.click();
+                    logger.info("Dismiss button clicked.");
+                    return true;
+                }
+            }
+
+            List<WebElement> nestedIframes = driver.findElements(By.tagName("iframe"));
+            logger.info("Found {} nested iframe(s) inside current frame.", nestedIframes.size());
+
+            for (WebElement nested : nestedIframes) {
+                if (nested.isDisplayed()) {
+                    logger.info("Switching into visible nested iframe.");
+                    driver.switchTo().frame(nested);
+
+                    boolean found = searchAndCloseButton(driver);
+
+                    driver.switchTo().parentFrame();
+                    logger.info("Returned to parent frame after nested iframe check.");
+
+                    if (found) return true;
+                }
+            }
+
+        } catch (NoSuchElementException | ElementNotInteractableException e) {
+            logger.warn("Dismiss button or iframe not interactable: {}", e.getMessage());
+        } catch (Exception e) {
+            logger.error("Unexpected error while searching inside iframe: {}", e.getMessage(), e);
+        }
+
+        return false;
     }
 }

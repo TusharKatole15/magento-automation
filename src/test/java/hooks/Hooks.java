@@ -3,7 +3,9 @@ package hooks;
 import base.BaseTest;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
+import io.cucumber.java.BeforeAll;
 import io.cucumber.java.Scenario;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.slf4j.Logger;
@@ -18,6 +20,13 @@ public class Hooks {
 
     private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
     private static boolean isAllurePathSet = false;
+
+    @BeforeAll
+    public static void cleanAllureResults() throws IOException {
+        FileUtils.deleteDirectory(new File("test-output/allure-results"));
+        FileUtils.deleteDirectory(new File("test-output/allure-report"));
+    }
+
 
     @Before
     public void setUp(Scenario scenario) {

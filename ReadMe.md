@@ -6,7 +6,15 @@ testRunner.RunTest
 This will execute the tests with Cucumber and generate Allure results.
 
 ---
+## Screen Recording
+Screen recording is located at:
+https://drive.google.com/file/d/1MangpfNViMBpvmimyN6GnnHItNp2BNCo/view?usp=drive_link
 
+---
+## Test Cases Excel
+Test Cases Excel file is located at: 
+
+---
 ## Feature Files
 All test scenarios are written using Gherkin and located at:
 src/test/resources/features/

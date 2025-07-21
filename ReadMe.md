@@ -13,7 +13,7 @@ https://drive.google.com/file/d/1MangpfNViMBpvmimyN6GnnHItNp2BNCo/view?usp=drive
 ---
 ## Test Cases Excel
 Test Cases Excel file is located at: 
-
+TestCases/TestCases.xlsx
 ---
 ## Feature Files
 All test scenarios are written using Gherkin and located at:
